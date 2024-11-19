@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+h1 {
+    color: #333;
+}
+
+.folder-name {
+    font-size: 25px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.folder-link {
+    text-decoration: none;
+    color:black;
+    
+}
+
+.delete-path-button {
+    font-size: 20px;
+    background-color: rgb(107, 107, 107);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    
+}
+
+
+button {
+    background-color: rgb(107, 107, 107);
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #ccc; /* Обводка для кнопок */
+    border-radius: 3px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #414141; /* Подсветка при наведении */
+}
+
+#file-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#file-list li {
+    margin-bottom: 10px;  /* Отступ между элементами */
+    display: flex;
+    justify-content: space-between; /* Распределяет элементы по ширине */
+    align-items: center;
+}
