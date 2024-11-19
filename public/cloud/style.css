@@ -2,55 +2,168 @@ body {
     font-family: Arial, sans-serif;
     margin: 20px;
 }
+h1, h5 {
+    display: inline; /* Элементы будут располагаться в одну строку */
+    margin: 0; /* Убираем отступы по умолчанию */
+    padding: 0; /* Убираем внутренние отступы */
+}
+
 h1 {
-    color: #333;
+    font-size: 2em; /* Размер шрифта для h1 */
+    margin-right: 10px; /* Отступ между h1 и h5 */
 }
 
-.folder-name {
-    font-size: 25px;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-
-.folder-link {
-    text-decoration: none;
-    color:black;
-    
-}
-
-.delete-path-button {
-    font-size: 20px;
-    background-color: rgb(107, 107, 107);
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    
+h5 {
+    font-size: 1em; /* Размер шрифта для h5 */
 }
 
 
-button {
-    background-color: rgb(107, 107, 107);
-    color: white;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: 1px solid #ccc; /* Обводка для кнопок */
-    border-radius: 3px;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #414141; /* Подсветка при наведении */
-}
-
-#file-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-#file-list li {
-    margin-bottom: 10px;  /* Отступ между элементами */
+.folder-item, .file-item {
     display: flex;
-    justify-content: space-between; /* Распределяет элементы по ширине */
-    align-items: center;
+    justify-content: space-between;
+    align-items: center; /* Центрирование по вертикали */
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+
+.buttons-file {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.folder-item:hover, .file-item:hover {
+    background-color: #f5f5f5;
+}
+
+.folder-name, .file-name {
+    display: flex;
+    align-items: center; /* Выравнивание иконки и текста */
+}
+
+.delete-path-button, .delete-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.download-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-folder-form {
+    display: flex;
+    margin-top: 20px;
+}
+
+.folder-create-input {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.folder-create-button {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload-form {
+    margin-top: 20px;
+}
+
+.file-create-input {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.file-create-button {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.current-path {
+    font-weight: bold;
+    margin-bottom: 10px;
+
+}
+
+.input-file {
+	position: relative;
+	display: inline-block;
+}
+.input-file-btn {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	outline: none;
+	text-decoration: none;
+	font-size: 14px;
+	vertical-align: middle;
+	color: rgb(255 255 255);
+	text-align: center;
+	border-radius: 4px;
+	padding: 5px 10px;
+    background-color: #28a745;
+	box-sizing: border-box;
+	border: none;
+	margin: 0;
+}
+.input-file-text {
+	padding: 0 10px;
+	line-height: 40px;
+	display: inline-block;
+}
+.input-file input[type=file] {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	display: block;
+	width: 0;
+	height: 0;
+}
+ 
+/* Focus */
+.input-file input[type=file]:focus + .input-file-btn {
+	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+ 
+/* Hover/active */
+.input-file:hover .input-file-btn {
+	background-color: #59be6e;
+}
+.input-file:active .input-file-btn {
+	background-color: #2E703A;
+}
+ 
+/* Disabled */
+.input-file input[type=file]:disabled + .input-file-btn {
+	background-color: #eee;
 }

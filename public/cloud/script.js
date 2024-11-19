@@ -7,14 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentPath = '~'; // Храним текущий путь
 
     // Функция для загрузки списка файлов и папок
-    const fetchFiles = async (path = '~') => {
+    const fetchFiles = async (path = '') => {
         try {
             currentPath = path; // Обновляем текущий путь
             const response = await fetch(`/list-files?path=${encodeURIComponent(path)}`);
             const data = await response.json();
 
             if (response.ok) {
-                currentPathDisplay.innerHTML = `Current Path: ${path || "~"}`;
+                currentPathDisplay.innerHTML = `<span class ="current-path" id="current-path">Current Path: ${path || "~"}</span>`;
 
                 // Рендерим кнопку Back (возвращаемся на один уровень вверх)
                 const backButtonHTML = path !== '~' ? `<button id="back-button">Back</button>` : '';
@@ -26,11 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Рендерим список файлов и папок
                 fileList.innerHTML = `
                     ${backButtonHTML}
-                    <ul>
+                    <div>
                         ${folders.map(file => {
                             const newPath = path ? `${path}/${file.name}` : file.name;
                             //return `<li>📂 <a href="#" class="folder-link" data-path="${newPath}">${file.name}</a></li>`;
-                           return `<div>
+                           return `<div class="folder-item">
                                <span class="folder-name">📂 <a href="#" class="folder-link" data-path="${newPath}">${file.name}</a></span>
                                <button class="delete-path-button" data-path="${newPath}">Delete</button>
                            </div>`;
@@ -38,21 +38,24 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${files.map(file => {
                             // Формируем путь
                             const filePath = path ? `${path}/${file.name}` : file.name;
-                            return `<div>
+                            return `
+                            <div class="file-item">
                                 <span class="file-name">📄 ${file.name}</span>
-                                <button class="download-button" data-path="${filePath}">Download</button>
-                                <button class="delete-button" data-path="${filePath}">Delete</button>
+                                <div class="buttons-file">
+                                    <button class="download-button" data-path="${filePath}">Download</button>
+                                    <button class="delete-button" data-path="${filePath}">Delete</button>
+                                </div>
                             </div>`;
                         }).join('')}
 
-                    </ul>`;
+                    </div>`;
 
                 // Обработчик для кнопки "Back"
                 const backButton = document.getElementById("back-button");
                 if (backButton) {
                     backButton.addEventListener("click", () => {
                         const parentPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
-                        const newPath = parentPath || '~'; // Чтобы вернуться к корню, если находимся в корне
+                        const newPath = parentPath || ''; // Чтобы вернуться к корню, если находимся в корне
                         fetchFiles(newPath); // Загружаем файлы для новой папки
                     });
                 }
@@ -155,23 +158,45 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Обработка формы загрузки файлов
-    uploadForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const fileInput = document.getElementById("file-input");
-        const formData = new FormData();
-        formData.append("file", fileInput.files[0]);
-        formData.append("path", currentPath);
+uploadForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const fileInput = document.getElementById("file-input");
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+    formData.append("path", currentPath);
 
+    // Проверка на выбор файла
+    if (!fileInput.files[0]) {
+        alert("Please select a file to upload.");
+        return;
+    }
+
+    // Обновляем статус загрузки на "Загружается..."
+    const inputFileContainer = fileInput.closest('.input-file');
+    const statusText = inputFileContainer.querySelector('.input-file-text');
+    statusText.textContent = "Uploading...";
+
+    try {
+        // Отправка файла на сервер
         const response = await fetch("/upload", {
             method: "POST",
             body: formData,
         });
 
         if (response.ok) {
-            alert("File uploaded successfully!");
-            fetchFiles(currentPath);  // Обновляем файлы после загрузки
+            // После успешной загрузки обновляем текст
+            statusText.textContent = "File uploaded successfully!";
+            fetchFiles(currentPath);  // Обновляем список файлов на странице
+        } else {
+            statusText.textContent = "Error uploading file.";
         }
-    });
+    } catch (error) {
+        // Обработка ошибок
+        console.error("Upload failed:", error);
+        statusText.textContent = "Error uploading file.";
+    }
+});
+
     // Обработка формы создания папки
     createFolderForm.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -179,6 +204,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const formData = new FormData();
         formData.append("folder-name", fileInput.value); // Получаем значение из инпута
         formData.append("path", currentPath); // Передаем текущий путь
+
+        if (!fileInput.value) {
+            alert("Please enter a folder name.");
+            return;
+        }
 
         const response = await fetch("/createPath", {
             method: "POST",
@@ -195,5 +225,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Начальная загрузка файлов в корневой каталог
-    fetchFiles('~');
+    fetchFiles();
+});
+
+
+$('.input-file input[type=file]').on('change', function(){
+	let file = this.files[0];
+	$(this).closest('.input-file').find('.input-file-text').html(file.name);
 });
