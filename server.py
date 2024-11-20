@@ -133,4 +133,4 @@ def create_path():
         return jsonify({"error": f"Failed to create folder: {str(e)}"}), 500
 if __name__ == '__main__':
     os.makedirs(BASE_DIR, exist_ok=True)
-    app.run(host="192.168.0.106", port=8080, debug=True)
+    app.run(host="192.168.0.106", port=8088, debug=True)
