@@ -3,25 +3,39 @@ body {
     margin: 20px;
 }
 h1, h5 {
-    display: inline; /* Элементы будут располагаться в одну строку */
-    margin: 0; /* Убираем отступы по умолчанию */
-    padding: 0; /* Убираем внутренние отступы */
+    display: inline; 
+    margin: 0; 
+    padding: 0; 
 }
 
 h1 {
-    font-size: 2em; /* Размер шрифта для h1 */
-    margin-right: 10px; /* Отступ между h1 и h5 */
+    font-size: 2em;
+    margin-right: 10px; 
 }
 
 h5 {
-    font-size: 1em; /* Размер шрифта для h5 */
+    font-size: 1em; 
+}
+
+.folder-link, .file-link {
+    text-decoration: none;
+    color: #333;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  font-size: 1.2em;
+}
+
+.folder-file-icon {
+    margin-bottom: 10px;
+    font-size: 1.5em;
 }
 
 
 .folder-item, .file-item {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Центрирование по вертикали */
+    align-items: center;
     margin: 10px 0;
     padding: 10px;
     border: 1px solid #ccc;
@@ -42,7 +56,7 @@ h5 {
 
 .folder-name, .file-name {
     display: flex;
-    align-items: center; /* Выравнивание иконки и текста */
+    align-items: center; 
 }
 
 .delete-path-button, .delete-button {
@@ -150,12 +164,10 @@ h5 {
 	height: 0;
 }
  
-/* Focus */
 .input-file input[type=file]:focus + .input-file-btn {
 	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
 }
  
-/* Hover/active */
 .input-file:hover .input-file-btn {
 	background-color: #59be6e;
 }
@@ -163,7 +175,131 @@ h5 {
 	background-color: #2E703A;
 }
  
-/* Disabled */
+
 .input-file input[type=file]:disabled + .input-file-btn {
 	background-color: #eee;
 }
+
+/* From Uiverse.io by sihamjardi */ 
+.button_delete {
+    position: relative;
+    border-radius: 6px;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: 1px solid #cc0000;
+    background-color: #e50000;
+    overflow: hidden;
+  }
+  
+  .button_delete,
+  .button__icon,
+  .button__text {
+    transition: all 0.3s;
+  }
+  
+  .button_delete .button__text {
+    transform: translateX(35px);
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .button_delete .button__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: #cc0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button_delete .svg {
+    width: 20px;
+  }
+  
+  .button_delete:hover {
+    background: #cc0000;
+  }
+  
+  .button_delete:hover .button__text {
+    color: transparent;
+  }
+  
+  .button_delete:hover .button__icon {
+    width: 148px;
+    transform: translateX(0);
+  }
+  
+  .button_delete:active .button__icon {
+    background-color: #b20000;
+  }
+  
+  .button_delete:active {
+    border: 1px solid #b20000;
+  }
+  
+
+.button_download {
+    position: relative;
+    border-radius: 6px;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: 1px solid #17795E;
+    background-color: #209978;
+    overflow: hidden;
+    margin-right: 20px;
+  }
+  
+  .button_download, .button__icon, .button__text {
+    transition: all 0.3s;
+  }
+  
+  .button_download .button__text {
+    transform: translateX(22px);
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .button_download .button__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: #17795E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button_download .svg {
+    width: 20px;
+    fill: #fff;
+  }
+  
+  .button_download:hover {
+    background: #17795E;
+  }
+  
+  .button_download:hover .button__text {
+    color: transparent;
+  }
+  
+  .button_download:hover .button__icon {
+    width: 148px;
+    transform: translateX(0);
+  }
+  
+  .button_download:active .button__icon {
+    background-color: #146c54;
+  }
+  
+  .button_download:active {
+    border: 1px solid #146c54;
+  }

@@ -3,19 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="Image/x-icon" href="cloud/favicon.ico" rel="icon">
-    <title>File Manager</title>
-    <link rel="stylesheet" href="cloud/style.css">
+    <link type="Image/x-icon" href="/img/favicon.ico" rel="icon">
+    <title>Cloud File Manager</title>
+    <link rel="stylesheet" href="/cloud/style.css">
+    <img src="/img/logo_fon_off.png" id="logoimg" href="/cloud/index.html">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Cloud File Manager</h1>
-    <h5>by Kyra</h5>
+    <!-- <h1>Cloud File Manager</h1>
+    <h5>by Kyra</h5> -->
+    <div>
+        <span id="username"></span>
+        <button id="btn-login">Login</button>
+        <button id="btn-logout">Logout</button>
+    </div>
     <form id="create-folder-form">
         <input class = "folder-create-input" type="text" name="folder-name" id="name-input" placeholder="Folder Name">
         <button class="folder-create-button" type="submit">Create Folder</button>
     </form>
-    <form method="post" enctype="multipart/form-data" id="upload-form">
+    <form method="post" enctype="multipart/form-data" id="upload-form" class = "upload-form">
         <label class="input-file">
                <input type="file" name="file" id = "file-input">
                 <span class="input-file-btn">Enter file</span>           
@@ -26,6 +32,6 @@
     <div id="current-path">
     </div>
     <div id="file-list"></div>
-    <script src="cloud/script.js"></script>
+    <script src="/cloud/script.js"></script>
 </body>
 </html>
