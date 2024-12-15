@@ -27,7 +27,7 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE,
             password TEXT,
-            level INTEGER DEFAULT 1
+            level INTEGER DEFAULT 3
         )
     ''')
     conn.commit()
@@ -41,6 +41,7 @@ def get_user_level(user_id):
     cursor.execute("SELECT level FROM users WHERE id = ?", (user_id,))
     result = cursor.fetchone()
     conn.close()
+    print(result[0] if result else None)
     return result[0] if result else None
 
 
@@ -93,7 +94,7 @@ def require_level(min_level):
 @app.route('/')
 def serve_filesystem():
     # Отправляем HTML
-    return send_from_directory('public/', 'index.html')
+    return send_from_directory('public/cloud', 'index.html')
 
 @app.route('/<path:filename>')
 def serve_static(filename):
@@ -142,6 +143,88 @@ def login():
     )
 
     return jsonify({'message': 'Вход успешно выполнен', 'token': token, 'userLevel': get_user_level(user_id)}), 200
+
+# @app.route('/db/index.html', methods=['GET'])
+# def access_db_page():
+#     conn = sqlite3.connect('mainKp.db')
+#     cursor = conn.cursor()
+
+#     # Получение списка пользователей и их уровней
+#     cursor.execute('SELECT id, username, level FROM users')
+#     users = cursor.fetchall()
+#     conn.close()
+
+#     # Фильтрация пользователей, уровень которых ниже текущего пользователя
+#     current_user_id = request.user['id']
+#     current_user_level = get_user_level(current_user_id)
+
+#     if current_user_level is None:
+#         return jsonify({"error": "Пользователь не найден"}), 404
+
+#     # Выбираем пользователей, уровень которых ниже текущего
+#     filtered_users = [
+#         {"id": user_id, "username": username, "level": level}
+#         for user_id, username, level in users
+#         if level < current_user_level
+#     ]
+
+#     # Возвращаем HTML-страницу с информацией
+#     html_response = """
+#     <html>
+#         <head>
+#             <title>Панель управления доступом</title>
+#         </head>
+#         <body>
+#             <h1>Список пользователей с доступом ниже вашего уровня</h1>
+#             <ul>
+#     """
+#     for user in filtered_users:
+#         html_response += f"""
+#                 <li>
+#                     {user['username']} (уровень {user['level']})
+#                     <a href="/db/update-level/{user['id']}">Изменить уровень доступа</a>
+#                 </li>
+#         """
+#     html_response += """
+#             </ul>
+#         </body>
+#     </html>
+#     """
+@app.route('/api/setAccessLevel', methods=['POST'])
+def set_access_level():
+    data = request.json
+    username = data.get('username')
+    access_level = data.get('accessLevel')
+
+    if not username or access_level is None:
+        return jsonify({'error': 'Имя пользователя и уровень доступа обязательны'}), 400
+
+    try:
+        # Преобразуем уровень доступа в целое число
+        access_level = int(access_level)
+    except ValueError:
+        return jsonify({'error': 'Неверный формат уровня доступа'}), 400
+
+    # Подключаемся к базе данных
+    conn = sqlite3.connect('mainKp.db')
+    cursor = conn.cursor()
+
+    # Проверяем, существует ли пользователь
+    cursor.execute('SELECT id FROM users WHERE username = ?', (username,))
+    user = cursor.fetchone()
+
+    if not user:
+        conn.close()
+        return jsonify({'error': 'Пользователь не найден'}), 404
+
+    user_id = user[0]
+
+    # Обновляем уровень доступа
+    cursor.execute('UPDATE users SET level = ? WHERE id = ?', (access_level, user_id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message': f'Уровень доступа пользователя "{username}" обновлён на {access_level}'}), 200
 
 # Middleware для проверки токена
 def authenticate_token(f):

@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Обработка формы создания папки
     createFolderForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const folderName = document.getElementById("folder-name").value;
+        const folderName = document.getElementById("name-input").value;
 
         if (!folderName) {
             alert("Please enter a folder name.");
